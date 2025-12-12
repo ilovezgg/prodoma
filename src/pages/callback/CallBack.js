@@ -10,9 +10,10 @@ const CallBack = () => {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  e.preventDefault();
+  setIsSubmitting(true);
 
+  try {
     const res = await fetch('/api/amo-send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -25,11 +26,17 @@ const CallBack = () => {
       setPhone('');
       setDescription('');
     } else {
+      const error = await res.json();
+      console.error('Ошибка API:', error);
       alert('Ошибка отправки. Попробуйте позже.');
     }
+  } catch (err) {
+    console.error('Сетевая ошибка:', err);
+    alert('Не удалось подключиться к серверу.');
+  }
 
-    setIsSubmitting(false);
-  };
+  setIsSubmitting(false);
+};
 
   if (isSuccess) {
     return (
