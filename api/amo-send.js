@@ -1,20 +1,16 @@
 // api/amo-send.js
-module.exports = async (req, res) => {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Метод не разрешён' });
-  }
+export default async function handler(request, response) {
+  // Тело запроса уже парсится автоматически в новых версиях Vercel!
+  const body = await request.json();
 
-  let body = {};
-  try {
-    body = JSON.parse(req.body);
-  } catch (e) {
-    return res.status(400).json({ error: 'Неверный JSON' });
+  if (request.method !== 'POST') {
+    return response.status(405).json({ error: 'Метод не разрешён' });
   }
 
   const { name, phone, description } = body;
 
   if (!name || !phone) {
-    return res.status(400).json({ error: 'Имя и телефон обязательны' });
+    return response.status(400).json({ error: 'Имя и телефон обязательны' });
   }
 
   const AMO_SUBDOMAIN = process.env.AMO_SUBDOMAIN || 'bottlecvv';
@@ -22,9 +18,10 @@ module.exports = async (req, res) => {
 
   if (!ACCESS_TOKEN) {
     console.error('❌ AMO_ACCESS_TOKEN не задан');
-    return res.status(500).json({ error: 'Ошибка сервера' });
+    return response.status(500).json({ error: 'Ошибка сервера' });
   }
 
+  // Нормализация телефона
   const cleanPhone = phone.replace(/\D/g, '');
   let formattedPhone = cleanPhone;
   if (cleanPhone.startsWith('8')) {
@@ -35,7 +32,7 @@ module.exports = async (req, res) => {
   formattedPhone = '+' + formattedPhone;
 
   try {
-    const response = await fetch(`https://${AMO_SUBDOMAIN}.amocrm.ru/api/v4/leads`, {
+    const res = await fetch(`https://${AMO_SUBDOMAIN}.amocrm.ru/api/v4/leads`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${ACCESS_TOKEN}`,
@@ -52,8 +49,8 @@ module.exports = async (req, res) => {
                 first_name: name,
                 custom_fields_values: [
                   {
-                    field_code: 'PHONE',
-                    values: [{ value: formattedPhone, enum_code: 'WORK' }]
+                    field_id: 123456, // ← ЛУЧШЕ использовать field_id вместо field_code
+                    values: [{ value: formattedPhone, enum_id: 12345 }] // ← или enum_code
                   }
                 ]
               }
@@ -63,16 +60,16 @@ module.exports = async (req, res) => {
       ])
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('AmoCRM error:', response.status, errorText);
-      return res.status(500).json({ error: 'Не удалось отправить заявку' });
+    if (!res.ok) {
+      const text = await res.text();
+      console.error('AmoCRM error:', res.status, text);
+      return response.status(500).json({ error: 'Не удалось отправить заявку' });
     }
 
-    res.status(200).json({ success: true });
+    response.status(200).json({ success: true });
 
   } catch (error) {
-    console.error('Server error:', error);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    console.error('Ошибка:', error);
+    response.status(500).json({ error: 'Ошибка сервера' });
   }
-};
+}
