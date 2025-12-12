@@ -75,3 +75,33 @@
 .accent {
   color: rgb(245, 202, 161);
 }
+.first, .second, .third {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease, background-color 0.3s ease, border 0.3s ease;
+}
+
+.first.animate {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.1s; 
+}
+
+.second.animate {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+.third.animate {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+.first.animate:hover,
+.second.animate:hover,
+.third.animate:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-5px);
+}

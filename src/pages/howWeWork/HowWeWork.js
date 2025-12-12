@@ -1,16 +1,53 @@
-import React from 'react'
-import z from './HowWeWork.module.css'
+import React, { useRef, useEffect } from 'react';
+import z from './HowWeWork.module.css';
 
 const HowWeWork = () => {
+  const step1Ref = useRef(null);
+  const step2Ref = useRef(null);
+  const step3Ref = useRef(null);
+  const step4Ref = useRef(null);
+  const step5Ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add(z.animate);
+          }
+        });
+      },
+      {
+        threshold: 0.15, 
+      }
+    );
+
+    const steps = [step1Ref, step2Ref, step3Ref, step4Ref, step5Ref];
+
+    steps.forEach((ref) => {
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+    });
+
+    return () => {
+      steps.forEach((ref) => {
+        if (ref.current) {
+          observer.unobserve(ref.current);
+        }
+      });
+    };
+  }, []);
+
   return (
     <div className={z.main}>
       <div className={z.title}>
         Как мы строим ваш дом без стресса и скрытых платежей
       </div>
-      
-      <div className={z.container}>
 
-        <div className={z.step}>
+      <div className={z.container}>
+   
+        <div className={z.step} ref={step1Ref}>
           <div className={z.stepNumber}>1</div>
           <div className={z.stepContent}>
             <div className={z.titleCard}>Знакомство и ваша мечта о доме</div>
@@ -21,7 +58,8 @@ const HowWeWork = () => {
           </div>
         </div>
 
-        <div className={z.step}>
+       
+        <div className={z.step} ref={step2Ref}>
           <div className={z.stepNumber}>2</div>
           <div className={z.stepContent}>
             <div className={z.titleCard}>Проект, который учитывает каждую мелочь</div>
@@ -33,7 +71,8 @@ const HowWeWork = () => {
           </div>
         </div>
 
-        <div className={z.step}>
+      
+        <div className={z.step} ref={step3Ref}>
           <div className={z.stepNumber}>3</div>
           <div className={z.stepContent}>
             <div className={z.titleCard}>Фиксированная смета - никаких сюрпризов</div>
@@ -44,8 +83,8 @@ const HowWeWork = () => {
           </div>
         </div>
 
-
-        <div className={z.step}>
+      
+        <div className={z.step} ref={step4Ref}>
           <div className={z.stepNumber}>4</div>
           <div className={z.stepContent}>
             <div className={z.titleCard}>Строительство с проверкой качества</div>
@@ -57,7 +96,8 @@ const HowWeWork = () => {
           </div>
         </div>
 
-        <div className={z.step}>
+      
+        <div className={z.step} ref={step5Ref}>
           <div className={z.stepNumber}>5</div>
           <div className={z.stepContent}>
             <div className={z.titleCard}>Сдача дома и гарантия 5 лет</div>
@@ -69,7 +109,7 @@ const HowWeWork = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HowWeWork
+export default HowWeWork;
