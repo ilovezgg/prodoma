@@ -1,13 +1,40 @@
-body {
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Unbounded:wght@200..900&display=swap');
+
+html, body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  background-color: black !important;
+  color: white;
+  font-family: "Unbounded", sans-serif;
+  min-height: 100vh;
 }
 
+#root, .App {
+  min-height: 100vh;
+  width: 100%;
+  background-color: black;
+}
+
+
+html {
+  overscroll-behavior: none;
+}
+
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+
+.ultra-light { font-weight: 200; }
+.light { font-weight: 300; }
+.normal { font-weight: 400; }
+.medium { font-weight: 500; }
+.semi-bold { font-weight: 600; }
+.bold { font-weight: 700; }
+.extra-bold { font-weight: 800; }
+.black { font-weight: 900; }
+
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: "Unbounded", monospace;
 }

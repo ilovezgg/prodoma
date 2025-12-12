@@ -5,6 +5,7 @@
     justify-content: space-around;
     background-color: black;
     align-items: center;
+    
 }
 .pics{
     width: 45%;
@@ -20,7 +21,7 @@
     transform: translateY(-50px);
 }
 .title{
-    width: 52%;
+    width: 54%;
     height: 100%;
     transform: translateY(10%);
     letter-spacing: 1.7px;
@@ -36,14 +37,14 @@
   color: #000000;
 }
 .subTitle{
-    width: 85%;
+    width: 90%;
     height: 10%;
     display: flex;
     justify-content: space-around;
     transform: translateX(3%) translateY(40px);
 }
 .element{
-    width: 30%;
+    width: 32%;
     display: flex;
     flex-direction: column;
 }
@@ -75,7 +76,7 @@
     height: 20%;
     display: flex;
     justify-content: space-around;
-    transform: translateY(100%);
+    transform: translateY(94%);
     flex-direction: column;
     row-gap: 50px;
     align-items: center;
@@ -98,13 +99,14 @@ color: white;
     border: 0.5px solid rgb(245,202,161);
     color: white;
     text-align: center;
-    font-size: 40px;
+    font-size: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
     padding-bottom: 6px;
     transition: all 0.3s ease-in;
     cursor: pointer;
+    padding: 20px 40px;
 }
 .podr:hover{
     background-color: white;
@@ -121,10 +123,16 @@ color: white;
     border: 0.5px solid rgb(245,202,161);
     color: white;
     text-align: center;
-    font-size: 40px;
+    font-size: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-     cursor: pointer;
+    padding: 20px 40px;
+    cursor: pointer;
      transition: all 0.3s ease-in-out;
 }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
