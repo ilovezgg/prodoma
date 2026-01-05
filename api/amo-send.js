@@ -19,7 +19,6 @@ async function getTokens() {
   }
 }
 
-// Обновление access_token, если он истёк
 async function refreshAccessToken(refreshToken) {
   const res = await fetch(`https://${AMO_SUBDOMAIN}.amocrm.ru/oauth2/access_token`, {
     method: 'POST',
@@ -44,7 +43,7 @@ async function refreshAccessToken(refreshToken) {
   return tokens;
 }
 
-// Отправка лида в AmoCRM
+
 async function sendLeadToAmo(leadData, accessToken) {
   const res = await fetch(`https://${AMO_SUBDOMAIN}.amocrm.ru/api/v4/leads/complex`, {
     method: 'POST',
@@ -59,15 +58,15 @@ async function sendLeadToAmo(leadData, accessToken) {
         contacts: [{
           first_name: leadData.name,
           custom_fields_values: [
-            {
-              field_code: 'PHONE',
-              values: [{ value: leadData.phone }]
-            },
-            {
-              field_code: 'EMAIL',
-              values: [{ value: '' }] // можно оставить пустым
-            }
-          ]
+  {
+    field_id: 3, // вместо field_code: 'PHONE'
+    values: [{ value: leadData.phone, enum_code: 'WORK' }]
+  },
+  {
+    field_id: 2, // вместо field_code: 'EMAIL'
+    values: [{ value: '', enum_code: 'WORK' }]
+  }
+]
         }]
       }
     }])
