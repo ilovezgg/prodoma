@@ -1,21 +1,19 @@
-// pages/api/amo-send.js
+// api/amo-send.js
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Метод не разрешён' });
   }
 
-  const { name, phone, description } = req.body;
-
+  const { name, phone } = req.body;
   if (!name || !phone) {
     return res.status(400).json({ error: 'Имя и телефон обязательны' });
   }
 
-  // Читаем access_token из переменных окружения (надёжнее)
   const accessToken = process.env.AMO_ACCESS_TOKEN;
-  const subdomain = process.env.AMO_SUBDOMAIN || 'stepanovdanya2006';
+  const subdomain = 'stepanovdanya2006';
 
   if (!accessToken) {
-    console.error('AMO_ACCESS_TOKEN не задан в Environment Variables');
+    console.error('AMO_ACCESS_TOKEN не задан в Vercel Environment Variables');
     return res.status(500).json({ error: 'Ошибка конфигурации' });
   }
 
@@ -32,8 +30,7 @@ export default async function handler(req, res) {
           contacts: [{
             first_name: name,
             custom_fields_values: [
-              { field_id: 3, values: [{ value: phone, enum_code: 'WORK' }] }, // Телефон
-              { field_id: 2, values: [{ value: '', enum_code: 'WORK' }] }    // Email
+              { field_id: 3, values: [{ value: phone, enum_code: 'WORK' }] }
             ]
           }]
         }
@@ -43,12 +40,12 @@ export default async function handler(req, res) {
     if (response.ok) {
       return res.status(200).json({ success: true });
     } else {
-      const error = await response.json().catch(() => ({}));
-      console.error('AmoCRM API error:', error);
+      const err = await response.json().catch(() => ({}));
+      console.error('AmoCRM error:', err);
       return res.status(500).json({ error: 'Ошибка AmoCRM' });
     }
   } catch (err) {
-    console.error('Network error:', err);
+    console.error('Server error:', err);
     return res.status(500).json({ error: 'Ошибка сервера' });
   }
 }
